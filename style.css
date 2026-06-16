@@ -706,3 +706,8 @@ body#waiting-room {
   color: var(--muted);
   font-size: 0.95rem
 }
+
+#Reset_Icon{
+  width: 16px;
+  height: 16px;
+}
