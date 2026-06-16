@@ -60,3 +60,46 @@ body{
 .form-message{margin-top:12px;line-height:1.4}
 .form-message.error{color:#b91c1c}
 .form-message.success{color:#16a34a}
+
+/* Receptionist grid */
+.grid-2{display:grid;grid-template-columns:1fr 420px;gap:24px}
+.left-col .card{margin-bottom:18px}
+.now-serving-card{padding:20px;border-radius:14px;text-align:left}
+.now-top{display:flex;justify-content:space-between;align-items:center}
+.now-label{font-weight:700;color:var(--muted)}
+.now-small{color:var(--muted)}
+.now-big{font-size:2.6rem;font-weight:900;color:var(--accent);margin:12px 0}
+.now-name{font-weight:700}
+.call-btn{background:linear-gradient(90deg,var(--accent),#047857);color:#fff;padding:12px;border-radius:12px;margin-top:12px}
+.small{font-size:0.9rem}
+.add-patient-card h3,.avg-card h3{margin-top:0}
+.alt-btn{display:inline-block;width:100%;padding:12px;border-radius:12px;background:#f97316;color:#fff;border:none;font-weight:700}
+.avg-controls{display:flex;align-items:center;gap:12px;margin-top:14px}
+.round-btn{width:44px;height:44px;border-radius:999px;border:none;background:#eef2f1;font-size:20px}
+.avg-value{font-size:1.6rem;font-weight:800}
+.link-btn{background:transparent;border:none;color:var(--muted);cursor:pointer}
+
+.queue-header{display:flex;justify-content:space-between;align-items:center}
+
+.queue-list .queue-item{display:flex;gap:12px;align-items:center}
+.queue-item .token-pill{background:rgba(16,185,129,0.12);padding:8px 10px;border-radius:10px;color:var(--accent-2);font-weight:700;margin-right:8px}
+.queue-item .item-meta{color:var(--muted)}
+.queue-item .item-actions button{background:transparent;border:none;color:var(--muted);cursor:pointer}
+
+/* Waiting room dark theme */
+body#waiting-room{background:radial-gradient(1200px 400px at 10% 10%, #08323a 0%, #071b1e 30%, #041316 100%);color:#d7f8f2}
+.waiting-hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start;padding-top:28px}
+.display-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:36px;border-radius:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 30px 60px rgba(0,0,0,0.4)}
+.display-token{font-size:5rem;font-weight:900;color:#30f1df;margin:18px 0}
+.display-name{font-weight:700}
+.display-note{color:rgba(215,248,242,0.7)}
+.stats-row{display:flex;gap:16px;margin-bottom:18px}
+.stat-card{background:rgba(255,255,255,0.02);padding:16px;border-radius:12px;text-align:center;width:160px}
+.stat-number{font-weight:900;font-size:2rem;color:#c8fff6}
+.stat-label{color:rgba(200,255,246,0.6)}
+.up-next .queue-list .queue-item{background:rgba(255,255,255,0.03);border:none}
+
+@media (max-width:980px){
+  .grid-2{grid-template-columns:1fr}
+  .waiting-hero{grid-template-columns:1fr}
+}

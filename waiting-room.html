@@ -16,35 +16,33 @@
         </nav>
       </div>
     </header>
-    <main class="container">
-      <section class="page-header">
-        <div>
-          <h1>Patient Waiting Room</h1>
-          <p>See the current token being seen, tokens ahead, and the estimated wait.</p>
+    <main class="container waiting-hero">
+      <section class="display-left">
+        <div class="display-card">
+          <div class="now-label">NOW SERVING</div>
+          <div id="displayCurrentToken" class="display-token">—</div>
+          <div id="displayCurrentName" class="display-name muted">&nbsp;</div>
+          <div class="display-note muted">Please proceed to the doctor's room</div>
         </div>
       </section>
 
-      <section class="card status-card">
-        <div class="status-grid">
-          <div>
-            <p class="status-label">Current token</p>
-            <p id="displayCurrentToken" class="status-value">—</p>
+      <aside class="display-right">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-number" id="displayQueueCount">0</div>
+            <div class="stat-label">In queue</div>
           </div>
-          <div>
-            <p class="status-label">Tokens ahead</p>
-            <p id="tokensAhead" class="status-value">0</p>
-          </div>
-          <div>
-            <p class="status-label">Estimated wait</p>
-            <p id="estimatedWait" class="status-value">0 min</p>
+          <div class="stat-card">
+            <div class="stat-number" id="displayAvg">15</div>
+            <div class="stat-label">Min / patient</div>
           </div>
         </div>
-      </section>
 
-      <section class="card queue-card">
-        <h2>Upcoming tokens</h2>
-        <div id="waitingList" class="queue-list"></div>
-      </section>
+        <section class="card up-next">
+          <h4>UP NEXT</h4>
+          <div id="waitingList" class="queue-list"></div>
+        </section>
+      </aside>
     </main>
 
     <script src="app.js"></script>

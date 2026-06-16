@@ -33,63 +33,74 @@ function formatToken(tokenNumber) {
 
 function renderReceptionist(state) {
   const currentTokenEl = document.getElementById('currentToken');
-  const queueLengthEl = document.getElementById('queueLength');
-  const avgConsultationEl = document.getElementById('avgConsultation');
+  const currentNameEl = document.getElementById('currentName');
+  const nowCountEl = document.getElementById('nowCount');
   const queueListEl = document.getElementById('queueList');
-  const avgTimeInput = document.getElementById('avgTime');
+  const avgDisplay = document.getElementById('avgTimeDisplay');
   const receptionMessage = document.getElementById('receptionMessage');
   const timeMessage = document.getElementById('timeMessage');
 
-  currentTokenEl.textContent = state.currentToken ? `${formatToken(state.currentToken.token)} – ${state.currentToken.name}` : '—';
-  queueLengthEl.textContent = String(state.queue.length);
-  avgConsultationEl.textContent = `${state.averageConsultationTime} min`;
-  avgTimeInput.value = state.averageConsultationTime;
+  currentTokenEl.textContent = state.currentToken ? `${formatToken(state.currentToken.token)}` : '—';
+  currentNameEl.textContent = state.currentToken ? state.currentToken.name : '';
+  nowCountEl.textContent = `${state.queue.length} waiting in queue`;
+  if (avgDisplay) avgDisplay.textContent = String(state.averageConsultationTime);
 
   receptionMessage.textContent = '';
-  receptionMessage.className = 'muted form-message';
+  receptionMessage.className = 'form-message muted';
   timeMessage.textContent = '';
-  timeMessage.className = 'muted form-message';
+  timeMessage.className = 'form-message muted';
 
-  queueListEl.innerHTML = state.queue.length
-    ? state.queue
-        .map(
-          (item) => `
-        <div class="queue-item">
-          <div>
-            <strong>${formatToken(item.token)}</strong>
-            <div>${item.name}</div>
+  if (!queueListEl) return;
+  if (state.queue.length === 0) {
+    queueListEl.innerHTML = '<p class="muted">No patients waiting.</p>';
+  } else {
+    queueListEl.innerHTML = state.queue
+      .map((item) => {
+        return `
+          <div class="queue-item">
+            <div style="display:flex;align-items:center">
+              <div class="token-pill">${formatToken(item.token)}</div>
+              <div>
+                <div><strong>${item.name}</strong></div>
+                <div class="item-meta">${item.phone || ''}</div>
+              </div>
+            </div>
+            <div class="item-actions">
+              <button data-skip-token="${item.token}">Skip</button>
+            </div>
           </div>
-          <span>Waiting</span>
-        </div>
-      `
-        )
-        .join('')
-    : '<p class="muted">No patients waiting.</p>';
+        `;
+      })
+      .join('');
+  }
 }
 
 function renderWaitingRoom(state) {
   const displayCurrentToken = document.getElementById('displayCurrentToken');
-  const tokensAhead = document.getElementById('tokensAhead');
-  const estimatedWait = document.getElementById('estimatedWait');
+  const displayCurrentName = document.getElementById('displayCurrentName');
   const waitingList = document.getElementById('waitingList');
+  const displayQueueCount = document.getElementById('displayQueueCount');
+  const displayAvg = document.getElementById('displayAvg');
 
-  displayCurrentToken.textContent = state.currentToken ? `${formatToken(state.currentToken.token)} – ${state.currentToken.name}` : 'Waiting for next patient';
-  tokensAhead.textContent = String(state.queue.length);
-  estimatedWait.textContent = `${state.queue.length * state.averageConsultationTime} min`;
+  displayCurrentToken.textContent = state.currentToken ? `${formatToken(state.currentToken.token)}` : '—';
+  displayCurrentName.textContent = state.currentToken ? state.currentToken.name : '';
+  if (displayQueueCount) displayQueueCount.textContent = String(state.queue.length);
+  if (displayAvg) displayAvg.textContent = String(state.averageConsultationTime);
 
+  if (!waitingList) return;
   waitingList.innerHTML = state.queue.length
     ? state.queue
-        .map(
-          (item, index) => `
+        .map((item, index) => `
         <div class="queue-item">
-          <div>
-            <strong>${formatToken(item.token)}</strong>
-            <div>${item.name}</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="token-pill">${formatToken(item.token)}</div>
+            <div>
+              <div><strong>${item.name}</strong></div>
+              <div class="item-meta">Next up · ~${(index + 1) * state.averageConsultationTime} min</div>
+            </div>
           </div>
-          <span>Position ${index + 1}</span>
         </div>
-      `
-        )
+      `)
         .join('')
     : '<p class="muted">No patients are waiting.</p>';
 }
@@ -154,7 +165,10 @@ function addPatient(name) {
 
   const state = loadState();
   const tokenNumber = state.nextTokenNumber;
-  state.queue.push({ token: tokenNumber, name: name.trim() });
+  // collect optional phone if present in DOM
+  const phoneInput = document.getElementById('patientPhone');
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  state.queue.push({ token: tokenNumber, name: name.trim(), phone });
   state.nextTokenNumber += 1;
   saveState(state);
   syncRender();
@@ -171,6 +185,30 @@ function callNext() {
   saveState(state);
   syncRender();
   showReceptionistMessage('receptionMessage', `Now calling ${formatToken(state.currentToken.token)}.`, 'success');
+}
+
+function skipToken(tokenNumber) {
+  const state = loadState();
+  const idx = state.queue.findIndex((q) => q.token === tokenNumber);
+  if (idx === -1) return;
+  const removed = state.queue.splice(idx, 1)[0];
+  saveState(state);
+  syncRender();
+  showReceptionistMessage('receptionMessage', `Skipped ${formatToken(removed.token)}.`, 'success');
+}
+
+function resetQueue() {
+  if (!confirm('Reset the queue and current token?')) return;
+  const state = { ...defaultState };
+  saveState(state);
+  syncRender();
+}
+
+function changeAverage(delta) {
+  const state = loadState();
+  state.averageConsultationTime = Math.max(1, Math.round(state.averageConsultationTime + delta));
+  saveState(state);
+  syncRender();
 }
 
 function saveAverageTime(value) {
@@ -192,6 +230,9 @@ function initReceptionist() {
   const callNextBtn = document.getElementById('callNextBtn');
   const saveTimeBtn = document.getElementById('saveTimeBtn');
   const avgTimeInput = document.getElementById('avgTime');
+  const avgMinusBtn = document.getElementById('avgMinusBtn');
+  const avgPlusBtn = document.getElementById('avgPlusBtn');
+  const resetQueueBtn = document.getElementById('resetQueueBtn');
 
   addPatientBtn.addEventListener('click', () => {
     addPatient(patientNameInput.value);
@@ -209,29 +250,34 @@ function initReceptionist() {
   callNextBtn.addEventListener('click', () => {
     callNext();
   });
-
-  saveTimeBtn.addEventListener('click', () => {
-    saveAverageTime(avgTimeInput.value);
-  });
-
   patientNameInput.addEventListener('input', () => {
     if (patientNameInput.value.trim()) {
       clearReceptionistMessages();
     }
   });
 
-  avgTimeInput.addEventListener('input', () => {
-    if (Number(avgTimeInput.value) >= 1) {
-      clearReceptionistMessages();
-    }
-  });
-
-  avgTimeInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
+  if (saveTimeBtn && avgTimeInput) {
+    saveTimeBtn.addEventListener('click', () => {
       saveAverageTime(avgTimeInput.value);
-    }
-  });
+    });
+
+    avgTimeInput.addEventListener('input', () => {
+      if (Number(avgTimeInput.value) >= 1) {
+        clearReceptionistMessages();
+      }
+    });
+
+    avgTimeInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        saveAverageTime(avgTimeInput.value);
+      }
+    });
+  }
+
+  if (avgMinusBtn) avgMinusBtn.addEventListener('click', () => changeAverage(-1));
+  if (avgPlusBtn) avgPlusBtn.addEventListener('click', () => changeAverage(1));
+  if (resetQueueBtn) resetQueueBtn.addEventListener('click', resetQueue);
 }
 
 window.addEventListener('storage', (event) => {
@@ -244,5 +290,14 @@ window.addEventListener('DOMContentLoaded', () => {
   syncRender();
   if (document.body.id === 'receptionist') {
     initReceptionist();
+  }
+});
+
+// attach global click handler for skip buttons rendered dynamically
+window.addEventListener('click', (e) => {
+  const skip = e.target.closest('[data-skip-token]');
+  if (skip) {
+    const token = Number(skip.getAttribute('data-skip-token'));
+    skipToken(token);
   }
 });

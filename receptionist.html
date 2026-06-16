@@ -16,54 +16,57 @@
         </nav>
       </div>
     </header>
-    <main class="container">
-      <section class="page-header">
-        <div>
-          <h1>Receptionist View</h1>
-          <p>Manage incoming patients, call the next token, and set average consultation time.</p>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="form-row">
-          <label for="patientName">Patient name</label>
-          <input id="patientName" type="text" placeholder="Enter patient name" autocomplete="off" />
-        </div>
-        <button id="addPatientBtn" class="primary-btn">Add patient</button>
-        <p id="receptionMessage" class="muted form-message"></p>
-      </section>
-
-      <section class="card">
-        <div class="form-row">
-          <label for="avgTime">Average consultation time (minutes)</label>
-          <input id="avgTime" type="number" min="1" step="1" />
-        </div>
-        <button id="saveTimeBtn" class="secondary-btn">Save average time</button>
-        <p id="timeMessage" class="muted form-message"></p>
-      </section>
-
-      <section class="card status-card">
-        <div class="status-grid">
-          <div>
-            <p class="status-label">Current token</p>
-            <p id="currentToken" class="status-value">—</p>
+    <main class="container grid-2">
+      <div class="left-col">
+        <section class="card now-serving-card">
+          <div class="now-top">
+            <div class="now-label">NOW SERVING</div>
+            <div id="nowTokenSmall" class="now-small">&nbsp;</div>
           </div>
-          <div>
-            <p class="status-label">Queue length</p>
-            <p id="queueLength" class="status-value">0</p>
-          </div>
-          <div>
-            <p class="status-label">Avg consultation</p>
-            <p id="avgConsultation" class="status-value">15 min</p>
-          </div>
-        </div>
-        <button id="callNextBtn" class="primary-btn">Call Next</button>
-      </section>
+          <div id="currentToken" class="now-big">—</div>
+          <div id="currentName" class="now-name muted">&nbsp;</div>
+          <button id="callNextBtn" class="primary-btn call-btn">Call Next Patient</button>
+          <div id="nowCount" class="muted small">0 waiting in queue</div>
+        </section>
 
-      <section class="card queue-card">
-        <h2>Waiting queue</h2>
-        <div id="queueList" class="queue-list"></div>
-      </section>
+        <section class="card add-patient-card">
+          <h3>Add Patient</h3>
+          <div class="form-row">
+            <label for="patientName">Patient name *</label>
+            <input id="patientName" type="text" placeholder="e.g. Aarav Mehta" autocomplete="off" />
+          </div>
+          <div class="form-row">
+            <label for="patientPhone">Phone (optional)</label>
+            <input id="patientPhone" type="text" placeholder="Optional" />
+          </div>
+          <button id="addPatientBtn" class="alt-btn">+ Add to Queue</button>
+          <p id="receptionMessage" class="form-message muted"></p>
+        </section>
+
+        <section class="card avg-card">
+          <h3>Avg Consultation Time</h3>
+          <p class="muted">Used to compute live wait estimates for everyone in the queue.</p>
+          <div class="avg-controls">
+            <button id="avgMinusBtn" class="round-btn">−</button>
+            <div id="avgTimeDisplay" class="avg-value">15</div>
+            <button id="avgPlusBtn" class="round-btn">+</button>
+            <div class="muted">min</div>
+          </div>
+          <p id="timeMessage" class="form-message muted"></p>
+        </section>
+      </div>
+
+      <aside class="right-col">
+        <section class="card queue-card">
+          <div class="queue-header">
+            <h3>Waiting Queue</h3>
+            <div class="queue-actions">
+              <button id="resetQueueBtn" class="link-btn">Reset</button>
+            </div>
+          </div>
+          <div id="queueList" class="queue-list"></div>
+        </section>
+      </aside>
     </main>
 
     <script src="app.js"></script>
