@@ -6,33 +6,58 @@
     <title>QueueCure</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <main class="container">
-      <header class="hero">
-        <div>
-          <h1>QueueCure</h1>
-          <p>Receptionist and waiting room screens for clinic queue management.</p>
-        </div>
-      </header>
+  <body id="index">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">QueueCure</div>
+        <nav class="nav">
+          <a class="nav-link" href="receptionist.html">Reception</a>
+          <a class="nav-cta" href="waiting-room.html">Waiting Room</a>
+        </nav>
+      </div>
+    </header>
 
-      <section class="card welcome-card">
-        <h2>Open a screen</h2>
-        <div class="card-grid">
-          <a class="screen-link" href="receptionist.html">Receptionist View</a>
-          <a class="screen-link" href="waiting-room.html">Patient Waiting Room</a>
+    <main class="container hero-grid">
+      <section class="hero-copy">
+        <span class="eyebrow">Built for Queue Cure '26</span>
+        <h1>No more paper tokens and shouting names.</h1>
+        <p class="lead">QueueCure turns clinic queues digital. Receptionists add patients and call the next token; patients watch a live screen showing who's being seen and exactly how long the wait is — synced the instant "Call Next" is pressed.</p>
+
+        <div class="hero-actions">
+          <a class="primary-btn" href="receptionist.html">Open Reception</a>
+          <a class="secondary-btn" href="waiting-room.html">Open Waiting Room</a>
         </div>
-        <p class="muted">Open both pages in separate browser tabs/windows for live sync.</p>
+
+        <p class="tip">Tip: open both screens in separate tabs to see the live sync in action.</p>
       </section>
 
-      <section class="card notes-card">
-        <h2>How it works</h2>
-        <ul>
-          <li>Add a patient from the receptionist screen.</li>
-          <li>Set the average consultation time.</li>
-          <li>Click "Call Next" to move the next token into consultation.</li>
-          <li>The waiting room updates instantly across open tabs.</li>
-        </ul>
-      </section>
+      <aside class="hero-card">
+        <div class="card-now-serving">
+          <div class="card-top">
+            <div class="now-label">Now Serving</div>
+            <div class="status-pill">Live</div>
+          </div>
+
+          <div id="indexCurrentToken" class="big-token">A-014</div>
+
+          <div class="upcoming">
+            <div class="upcoming-item">
+              <div class="upcoming-token">015</div>
+              <div class="upcoming-time">~10 min</div>
+            </div>
+            <div class="upcoming-item">
+              <div class="upcoming-token">016</div>
+              <div class="upcoming-time">~20 min</div>
+            </div>
+            <div class="upcoming-item">
+              <div class="upcoming-token">017</div>
+              <div class="upcoming-time">~30 min</div>
+            </div>
+          </div>
+        </div>
+      </aside>
     </main>
+
+    <script src="app.js"></script>
   </body>
 </html>

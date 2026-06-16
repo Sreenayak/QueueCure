@@ -28,7 +28,7 @@ function saveState(state) {
 }
 
 function formatToken(tokenNumber) {
-  return `#${String(tokenNumber).padStart(3, '0')}`;
+  return `A-${String(tokenNumber).padStart(3, '0')}`;
 }
 
 function renderReceptionist(state) {
@@ -94,6 +94,31 @@ function renderWaitingRoom(state) {
     : '<p class="muted">No patients are waiting.</p>';
 }
 
+function renderIndexHero(state) {
+  const el = document.getElementById('indexCurrentToken');
+  if (!el) return;
+
+  // current token
+  el.textContent = state.currentToken ? `${formatToken(state.currentToken.token)}` : '—';
+
+  // upcoming chips
+  const upcomingEls = document.querySelectorAll('.upcoming-item');
+  for (let i = 0; i < upcomingEls.length; i++) {
+    const item = upcomingEls[i];
+    const data = state.queue[i];
+    const tokenEl = item.querySelector('.upcoming-token');
+    const timeEl = item.querySelector('.upcoming-time');
+    if (data) {
+      tokenEl.textContent = String(data.token).padStart(3, '0');
+      const estimated = (i + 1) * state.averageConsultationTime;
+      timeEl.textContent = `~${estimated} min`;
+    } else {
+      tokenEl.textContent = '--';
+      timeEl.textContent = '';
+    }
+  }
+}
+
 function syncRender() {
   const state = loadState();
   const pageId = document.body.id;
@@ -103,6 +128,9 @@ function syncRender() {
   }
   if (pageId === 'waiting-room') {
     renderWaitingRoom(state);
+  }
+  if (pageId === 'index') {
+    renderIndexHero(state);
   }
 }
 
