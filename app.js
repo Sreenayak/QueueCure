@@ -286,10 +286,103 @@ window.addEventListener('storage', (event) => {
   }
 });
 
+function loadAuth() {
+  try {
+    const raw = localStorage.getItem('queueCureAuth');
+    return raw ? JSON.parse(raw) : { users: [] };
+  } catch (error) {
+    return { users: [] };
+  }
+}
+
+function saveAuth(auth) {
+  localStorage.setItem('queueCureAuth', JSON.stringify(auth));
+}
+
+function signupUser(name, email, password) {
+  const auth = loadAuth();
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!name.trim() || !normalizedEmail || !password.trim()) {
+    return 'Please complete all fields.';
+  }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(normalizedEmail)) {
+    return 'Enter a valid email address.';
+  }
+  if (auth.users.some((user) => user.email === normalizedEmail)) {
+    return 'This email is already registered.';
+  }
+  auth.users.push({ name: name.trim(), email: normalizedEmail, password: password });
+  saveAuth(auth);
+  return null;
+}
+
+function loginUser(email, password) {
+  const auth = loadAuth();
+  const normalizedEmail = email.trim().toLowerCase();
+  const user = auth.users.find((user) => user.email === normalizedEmail && user.password === password);
+  if (!user) {
+    return 'Email or password is incorrect.';
+  }
+  localStorage.setItem('queueCureSession', JSON.stringify({ email: normalizedEmail, name: user.name }));
+  return null;
+}
+
+function initAuthPages() {
+  if (document.body.id === 'login') {
+    const loginSubmit = document.getElementById('loginSubmit');
+    const messageEl = document.getElementById('authMessage');
+    const emailInput = document.getElementById('loginEmail');
+    const passwordInput = document.getElementById('loginPassword');
+
+    if (loginSubmit) {
+      loginSubmit.addEventListener('click', () => {
+        const error = loginUser(emailInput.value, passwordInput.value);
+        if (error) {
+          messageEl.textContent = error;
+          messageEl.className = 'form-message error';
+        } else {
+          messageEl.textContent = 'Login successful. Redirecting...';
+          messageEl.className = 'form-message success';
+          setTimeout(() => {
+            window.location.href = 'receptionist.html';
+          }, 900);
+        }
+      });
+    }
+  }
+
+  if (document.body.id === 'signup') {
+    const signupSubmit = document.getElementById('signupSubmit');
+    const messageEl = document.getElementById('authMessage');
+    const nameInput = document.getElementById('signupName');
+    const emailInput = document.getElementById('signupEmail');
+    const passwordInput = document.getElementById('signupPassword');
+
+    if (signupSubmit) {
+      signupSubmit.addEventListener('click', () => {
+        const error = signupUser(nameInput.value, emailInput.value, passwordInput.value);
+        if (error) {
+          messageEl.textContent = error;
+          messageEl.className = 'form-message error';
+        } else {
+          messageEl.textContent = 'Account created. Redirecting to login...';
+          messageEl.className = 'form-message success';
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 900);
+        }
+      });
+    }
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   syncRender();
   if (document.body.id === 'receptionist') {
     initReceptionist();
+  }
+  if (document.body.id === 'login' || document.body.id === 'signup') {
+    initAuthPages();
   }
 });
 

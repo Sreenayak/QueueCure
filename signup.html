@@ -10,7 +10,7 @@
     <header class="site-header">
       <div class="container header-inner">
         <div class="site-brand">
-          <div class="logo">QueueCure</div>
+          <div class="logo"><span class="brand-icon"></span>QueueCure</div>
           <div class="brand-subtitle">Create account</div>
         </div>
         <nav class="nav">
@@ -38,9 +38,17 @@
           <label for="signupPassword">Password</label>
           <input id="signupPassword" type="password" placeholder="••••••••" />
         </div>
-        <button class="primary-btn auth-submit">Sign Up</button>
+        <button class="primary-btn auth-submit" id="signupSubmit">Sign Up</button>
+        <p id="authMessage" class="form-message muted"></p>
         <p class="auth-note">Already have an account? <a href="login.html">Login</a></p>
       </section>
     </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>QueueCure © 2026</div>
+        <div>Sign up to manage your clinic queue and waiting room screens.</div>
+      </div>
+    </footer>
+    <script src="app.js"></script>
   </body>
 </html>
