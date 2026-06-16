@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting Room - QueueCure</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="waiting-room">
+    <main class="container">
+      <header class="page-header">
+        <div>
+          <h1>Patient Waiting Room</h1>
+          <p>See the current token being seen, tokens ahead, and the estimated wait.</p>
+        </div>
+        <a class="nav-link" href="index.html">Home</a>
+      </header>
+
+      <section class="card status-card">
+        <div class="status-grid">
+          <div>
+            <p class="status-label">Current token</p>
+            <p id="displayCurrentToken" class="status-value">—</p>
+          </div>
+          <div>
+            <p class="status-label">Tokens ahead</p>
+            <p id="tokensAhead" class="status-value">0</p>
+          </div>
+          <div>
+            <p class="status-label">Estimated wait</p>
+            <p id="estimatedWait" class="status-value">0 min</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card queue-card">
+        <h2>Upcoming tokens</h2>
+        <div id="waitingList" class="queue-list"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

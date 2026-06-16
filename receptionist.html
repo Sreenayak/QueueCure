@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Receptionist - QueueCure</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="receptionist">
+    <main class="container">
+      <header class="page-header">
+        <div>
+          <h1>Receptionist View</h1>
+          <p>Manage incoming patients, call the next token, and set average consultation time.</p>
+        </div>
+        <a class="nav-link" href="index.html">Home</a>
+      </header>
+
+      <section class="card">
+        <div class="form-row">
+          <label for="patientName">Patient name</label>
+          <input id="patientName" type="text" placeholder="Enter patient name" autocomplete="off" />
+        </div>
+        <button id="addPatientBtn" class="primary-btn">Add patient</button>
+        <p id="receptionMessage" class="muted form-message"></p>
+      </section>
+
+      <section class="card">
+        <div class="form-row">
+          <label for="avgTime">Average consultation time (minutes)</label>
+          <input id="avgTime" type="number" min="1" step="1" />
+        </div>
+        <button id="saveTimeBtn" class="secondary-btn">Save average time</button>
+        <p id="timeMessage" class="muted form-message"></p>
+      </section>
+
+      <section class="card status-card">
+        <div class="status-grid">
+          <div>
+            <p class="status-label">Current token</p>
+            <p id="currentToken" class="status-value">—</p>
+          </div>
+          <div>
+            <p class="status-label">Queue length</p>
+            <p id="queueLength" class="status-value">0</p>
+          </div>
+          <div>
+            <p class="status-label">Avg consultation</p>
+            <p id="avgConsultation" class="status-value">15 min</p>
+          </div>
+        </div>
+        <button id="callNextBtn" class="primary-btn">Call Next</button>
+      </section>
+
+      <section class="card queue-card">
+        <h2>Waiting queue</h2>
+        <div id="queueList" class="queue-list"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

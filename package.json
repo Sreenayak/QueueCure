@@ -1,0 +1,12 @@
+{
+  "name": "queuecure",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Clinic queue management with receptionist and waiting room screens.",
+  "scripts": {
+    "start": "npx http-server . -p 8080"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
