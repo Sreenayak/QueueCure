@@ -30,7 +30,7 @@ body{
 
 .site-header{background:transparent;padding:18px 0}
 .header-inner{display:flex;align-items:center;justify-content:space-between}
-.logo{font-weight:700;color:var(--accent);font-size:1.25rem}
+.logo{font-weight:740;color:var(--accent);font-size:2.1rem;padding-right: 0%;}
 .nav{display:flex;gap:12px;align-items:center}
 .nav-link{padding:10px 14px;border-radius:12px;text-decoration:none;color:var(--muted);background:transparent}
 .nav-cta{padding:10px 14px;border-radius:12px;text-decoration:none;background:var(--accent);color:#fff;font-weight:700}
