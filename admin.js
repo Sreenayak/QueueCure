@@ -32,5 +32,27 @@ function renderAdminPage() {
 }
 
 if (document.body.id === 'admin-dashboard') {
-  document.addEventListener('DOMContentLoaded', renderAdminPage);
+  document.addEventListener('DOMContentLoaded', () => {
+    renderAdminPage();
+    
+    // Set up clear data button
+    const clearBtn = document.getElementById('clearAllDataBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        const confirmed = confirm(
+          '⚠️ WARNING: This will delete ALL user accounts, sessions, queue data, staff records, patient records, and analytics.\n\nThis action CANNOT be undone.\n\nType "CLEAR ALL" in the next prompt to confirm.'
+        );
+        
+        if (confirmed) {
+          const finalConfirm = prompt('Type "CLEAR ALL" to permanently delete all data:');
+          if (finalConfirm === 'CLEAR ALL') {
+            clearAllData();
+          } else {
+            alert('Cancelled. No data was deleted.');
+          }
+        }
+      });
+    }
+  });
 }
+

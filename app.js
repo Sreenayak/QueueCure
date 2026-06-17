@@ -608,6 +608,19 @@ function logoutUser() {
   window.location.href = 'index.html';
 }
 
+function clearAllData() {
+  // Clear all stored data
+  localStorage.removeItem('queueCureAuth');        // User accounts
+  localStorage.removeItem('queueCureSession');     // Current session
+  localStorage.removeItem(STORAGE_KEY);            // Queue data
+  localStorage.removeItem(STAFF_KEY);              // Staff
+  localStorage.removeItem(PATIENTS_KEY);           // Patient records
+  localStorage.removeItem(ANALYTICS_KEY);          // Analytics
+  
+  // Redirect to home
+  window.location.href = 'index.html';
+}
+
 function isAdmin() {
   const session = getSession();
   return session && session.role === 'admin';

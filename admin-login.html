@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - QueueCure</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="admin-login">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="site-brand">
+          <div class="logo"><span class="brand-icon"></span>QueueCure</div>
+          <div class="brand-subtitle">Admin Sign In</div>
+        </div>
+        <nav class="nav">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="waiting-room.html">Waiting Room</a>
+        </nav>
+        <div class="auth-actions">
+          <a class="auth-cta" href="signup.html">Create Account</a>
+        </div>
+      </div>
+    </header>
+    <main class="container auth-page">
+      <section class="auth-card">
+        <div class="auth-header">
+          <h1>Admin Login</h1>
+          <p class="auth-subtitle">Sign in to access administration and staff management tools.</p>
+        </div>
+        <div class="form-row">
+          <label for="adminLoginEmail">Email address</label>
+          <input id="adminLoginEmail" type="email" placeholder="admin@example.com" />
+        </div>
+        <div class="form-row">
+          <label for="adminLoginPassword">Password</label>
+          <input id="adminLoginPassword" type="password" placeholder="••••••••" />
+        </div>
+        <button class="primary-btn auth-submit" id="adminLoginSubmit">Admin Login</button>
+        <p id="adminAuthMessage" class="form-message muted"></p>
+        <p class="auth-note">
+          <a href="login.html">← Receptionist Login</a>
+        </p>
+        <p class="auth-note">
+          Don't have an account? <a href="signup.html">Sign up</a>
+        </p>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <strong>QueueCure</strong> © 2026
+        </div>
+        <div class="footer-meta">Secure admin authentication for clinic administrators</div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="login.html">Receptionist Login</a>
+        </div>
+      </div>
+    </footer>
+    <script src="app.js"></script>
+    <script src="admin-login.js"></script>
+  </body>
+</html>

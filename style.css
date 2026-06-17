@@ -1408,6 +1408,134 @@ select:focus {
   margin-bottom: 24px;
 }
 
+/* ============ ADMIN PAGES ============ */
+.admin-card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  margin-bottom: 20px;
+}
+
+.admin-card h3 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.admin-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-current-user {
+  background: linear-gradient(135deg, var(--accent), #047857);
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.admin-role {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.admin-summary-text {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Danger Zone */
+.danger-zone {
+  border: 2px solid #dc2626;
+  background: rgba(220, 38, 38, 0.05);
+}
+
+.danger-zone h3 {
+  color: #dc2626;
+}
+
+.danger-zone p {
+  color: #7f1d1d;
+  font-size: 0.95rem;
+  margin: 10px 0;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-danger:hover {
+  background-color: #991b1b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-card {
+  background: #f8fcfb;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 118, 110, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-name {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.user-email {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.user-role {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-2);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Admin Login Page */
+.auth-header {
+  margin-bottom: 24px;
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 8px;
+}
+
 @media (max-width: 768px) {
   .management-grid {
     grid-template-columns: 1fr;
