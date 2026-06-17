@@ -622,8 +622,9 @@ function renderHeaderAuthActions(session) {
       <a class="auth-cta" href="signup.html">Sign Up</a>
     `;
   } else {
+    const roleLabel = session.role ? ` (${session.role.charAt(0).toUpperCase() + session.role.slice(1)})` : '';
     authActions.innerHTML = `
-      <span class="auth-welcome">Hi, ${session.name}</span>
+      <span class="auth-welcome">Hi, ${session.name}${roleLabel}</span>
       <a class="auth-link logout-link" href="#" id="logoutBtn">
         <span class="logout-icon">⏻</span>Logout
       </a>
@@ -664,9 +665,18 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   if (document.body.id === 'staff-management') {
     if (!requireAuthPage('admin')) return;
+    initStaffManagement && initStaffManagement();
   }
-  if (document.body.id === 'patient-records' || document.body.id === 'analytics') {
+  if (document.body.id === 'patient-records') {
     if (!requireAuthPage()) return;
+    initPatientRecords && initPatientRecords();
+  }
+  if (document.body.id === 'analytics') {
+    if (!requireAuthPage()) return;
+    initAnalytics && initAnalytics();
+  }
+  if (document.body.id === 'admin-dashboard') {
+    if (!requireAuthPage('admin')) return;
   }
   if (document.body.id === 'login' || document.body.id === 'signup') {
     initAuthPages();

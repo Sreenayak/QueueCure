@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - QueueCure</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="admin-dashboard">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="site-brand">
+          <div class="logo"><span class="brand-icon"></span>QueueCure</div>
+          <div class="brand-subtitle">Admin Dashboard</div>
+        </div>
+        <nav class="nav">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="receptionist.html">Reception</a>
+          <a class="nav-link" href="waiting-room.html">Waiting Room</a>
+        </nav>
+        <div class="auth-actions">
+          <a class="auth-link" href="login.html">Login</a>
+          <a class="auth-cta" href="signup.html">Sign Up</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="section-header">
+        <h1>Admin Controls</h1>
+        <p>Manage users and update roles securely.</p>
+      </section>
+
+      <section class="card admin-card">
+        <div class="admin-summary">
+          <div id="adminCurrentUser" class="admin-current-user">Loading current admin data...</div>
+          <div id="adminSummary" class="admin-summary-text"></div>
+        </div>
+      </section>
+
+      <section class="card admin-card">
+        <h3>Registered Users</h3>
+        <div id="userList" class="user-list">
+          <p class="muted">Loading users...</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <strong>QueueCure</strong> © 2026
+        </div>
+        <div class="footer-meta">Admin only: manage user roles and access.</div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="receptionist.html">Reception</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
