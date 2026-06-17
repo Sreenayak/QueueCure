@@ -58,15 +58,18 @@ function renderReceptionist(state) {
       .map((item) => {
         return `
           <div class="queue-item">
-            <div style="display:flex;align-items:center">
+            <div class="queue-item-main">
               <div class="token-pill">${formatToken(item.token)}</div>
               <div>
                 <div><strong>${item.name}</strong></div>
-                <div class="item-meta">${item.phone || ''}</div>
+                <div class="item-meta">${item.phone || 'No phone provided'}</div>
               </div>
             </div>
             <div class="item-actions">
-              <button data-skip-token="${item.token}">Skip</button>
+              <button class="skip-btn" data-skip-token="${item.token}">
+                <img src="images/right-arrow.png" alt="Skip" />
+                Skip
+              </button>
             </div>
           </div>
         `;
@@ -157,22 +160,34 @@ function clearReceptionistMessages() {
   showReceptionistMessage('timeMessage', '', '');
 }
 
+function normalizePhone(value) {
+  return value.replace(/\D/g, '').slice(0, 10);
+}
+
 function addPatient(name) {
-  if (!name.trim()) {
+  const trimmedName = name.trim();
+  if (!trimmedName) {
     showReceptionistMessage('receptionMessage', 'Please enter a patient name.', 'error');
+    return;
+  }
+
+  const phoneInput = document.getElementById('patientPhone');
+  const rawPhone = phoneInput ? phoneInput.value.trim() : '';
+  const phone = normalizePhone(rawPhone);
+
+  if (rawPhone && phone.length !== 10) {
+    showReceptionistMessage('receptionMessage', 'Phone must be exactly 10 digits or left blank.', 'error');
     return;
   }
 
   const state = loadState();
   const tokenNumber = state.nextTokenNumber;
-  // collect optional phone if present in DOM
-  const phoneInput = document.getElementById('patientPhone');
-  const phone = phoneInput ? phoneInput.value.trim() : '';
-  state.queue.push({ token: tokenNumber, name: name.trim(), phone });
+  state.queue.push({ token: tokenNumber, name: trimmedName, phone });
   state.nextTokenNumber += 1;
   saveState(state);
   syncRender();
-  showReceptionistMessage('receptionMessage', `Added ${formatToken(tokenNumber)} for ${name.trim()}.`, 'success');
+  const phoneText = phone ? ` with ${phone}` : '';
+  showReceptionistMessage('receptionMessage', `Added ${formatToken(tokenNumber)} for ${trimmedName}${phoneText}.`, 'success');
 }
 
 function callNext() {
@@ -227,6 +242,7 @@ function saveAverageTime(value) {
 function initReceptionist() {
   const addPatientBtn = document.getElementById('addPatientBtn');
   const patientNameInput = document.getElementById('patientName');
+  const patientPhoneInput = document.getElementById('patientPhone');
   const callNextBtn = document.getElementById('callNextBtn');
   const saveTimeBtn = document.getElementById('saveTimeBtn');
   const avgTimeInput = document.getElementById('avgTime');
@@ -237,6 +253,7 @@ function initReceptionist() {
   addPatientBtn.addEventListener('click', () => {
     addPatient(patientNameInput.value);
     patientNameInput.value = '';
+    if (patientPhoneInput) patientPhoneInput.value = '';
     patientNameInput.focus();
   });
 
@@ -255,6 +272,14 @@ function initReceptionist() {
       clearReceptionistMessages();
     }
   });
+  if (patientPhoneInput) {
+    patientPhoneInput.addEventListener('input', (event) => {
+      const sanitized = normalizePhone(event.target.value);
+      if (event.target.value !== sanitized) {
+        event.target.value = sanitized;
+      }
+    });
+  }
 
   if (saveTimeBtn && avgTimeInput) {
     saveTimeBtn.addEventListener('click', () => {
@@ -376,9 +401,74 @@ function initAuthPages() {
   }
 }
 
+function getSession() {
+  try {
+    const raw = localStorage.getItem('queueCureSession');
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function requireAuthPage() {
+  const session = getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return false;
+  }
+  return true;
+}
+
+function logoutUser() {
+  localStorage.removeItem('queueCureSession');
+  window.location.href = 'index.html';
+}
+
+function renderHeaderAuthActions(session) {
+  const authActions = document.querySelector('.auth-actions');
+  if (!authActions) return;
+  if (!session) {
+    authActions.innerHTML = `
+      <a class="auth-link" href="login.html">Login</a>
+      <a class="auth-cta" href="signup.html">Sign Up</a>
+    `;
+  } else {
+    authActions.innerHTML = `
+      <span class="auth-welcome">Hi, ${session.name}</span>
+      <a class="auth-link" href="#" id="logoutBtn">Logout</a>
+    `;
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        logoutUser();
+      });
+    }
+  }
+}
+
+function initSessionUI() {
+  const session = getSession();
+  renderHeaderAuthActions(session);
+
+  const homeReceptionLink = document.getElementById('homeReceptionLink');
+  const homeReceptionNote = document.getElementById('homeReceptionNote');
+  if (session) {
+    if (homeReceptionNote) homeReceptionNote.textContent = 'Welcome back, ' + session.name + '. Reception tools are unlocked.';
+    if (homeReceptionLink) homeReceptionLink.href = 'receptionist.html';
+    if (homeReceptionLink) homeReceptionLink.classList.remove('secondary-btn');
+    if (homeReceptionNote) homeReceptionNote.classList.add('hero-note-success');
+  } else {
+    if (homeReceptionLink) homeReceptionLink.href = 'login.html';
+    if (homeReceptionNote) homeReceptionNote.textContent = 'Reception login required before accessing the dashboard.';
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   syncRender();
+  initSessionUI();
   if (document.body.id === 'receptionist') {
+    if (!requireAuthPage()) return;
     initReceptionist();
   }
   if (document.body.id === 'login' || document.body.id === 'signup') {

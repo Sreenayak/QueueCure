@@ -45,7 +45,7 @@
           </div>
           <div class="form-row">
             <label for="patientPhone">Phone (optional)</label>
-            <input id="patientPhone" type="text" placeholder="Optional" />
+            <input id="patientPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Optional – 10 digits" autocomplete="off" />
           </div>
           <button id="addPatientBtn" class="alt-btn">+ Add to Queue</button>
           <p id="receptionMessage" class="form-message muted"></p>
@@ -79,8 +79,16 @@
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <div>QueueCure © 2026</div>
-        <div>Reception dashboard that keeps patient flow in sync.</div>
+        <div class="footer-brand">
+          <strong>QueueCure</strong> © 2026
+          <div class="footer-note">Reception dashboard: keep patient flow clear, reduce waiting-time confusion, and manage consultation calls with confidence.</div>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="waiting-room.html">Waiting Room</a>
+          <a href="login.html">Login</a>
+        </div>
+        <div class="footer-meta">Designed for fast clinics, secure desk operations, and transparent patient communications.</div>
       </div>
     </footer>
     <script src="app.js"></script>
