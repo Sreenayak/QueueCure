@@ -78,5 +78,12 @@ function initStaffManagement() {
 }
 
 if (document.body.id === 'staff-management') {
-  document.addEventListener('DOMContentLoaded', initStaffManagement);
+  document.addEventListener('DOMContentLoaded', () => {
+    const session = getSession();
+    if (!session || session.role !== 'admin') {
+      window.location.href = 'index.html';
+      return;
+    }
+    initStaffManagement();
+  });
 }

@@ -87,15 +87,22 @@ function savePatients(patientsData) {
   localStorage.setItem(PATIENTS_KEY, JSON.stringify(patientsData));
 }
 
+function normalizePatientKey(name, phone) {
+  const normalizedName = name.trim().toLowerCase().replace(/\s+/g, ' ');
+  const normalizedPhone = phone ? normalizePhone(phone) : 'unknown';
+  return `${normalizedName}_${normalizedPhone || 'unknown'}`;
+}
+
 function getOrCreatePatient(name, phone) {
   const patientsData = loadPatients();
-  const patientKey = `${name.toLowerCase()}_${phone || 'unknown'}`;
+  const patientKey = normalizePatientKey(name, phone);
+  const normalizedPhone = phone ? normalizePhone(phone) : '';
   
   if (!patientsData.patients[patientKey]) {
     patientsData.patients[patientKey] = {
       id: Date.now(),
       name: name.trim(),
-      phone: phone || 'N/A',
+      phone: normalizedPhone || 'N/A',
       visits: [],
       medicalNotes: '',
       registeredDate: new Date().toISOString(),
@@ -349,6 +356,8 @@ function addPatient(name) {
     return;
   }
 
+  getOrCreatePatient(trimmedName, phone);
+
   const state = loadState();
   const tokenNumber = state.nextTokenNumber;
   state.queue.push({ token: tokenNumber, name: trimmedName, phone });
@@ -505,7 +514,8 @@ function signupUser(name, email, password) {
   if (auth.users.some((user) => user.email === normalizedEmail)) {
     return 'This email is already registered.';
   }
-  auth.users.push({ name: name.trim(), email: normalizedEmail, password: password });
+  const role = auth.users.length === 0 ? 'admin' : 'receptionist';
+  auth.users.push({ name: name.trim(), email: normalizedEmail, password: password, role });
   saveAuth(auth);
   return null;
 }
@@ -517,7 +527,8 @@ function loginUser(email, password) {
   if (!user) {
     return 'Email or password is incorrect.';
   }
-  localStorage.setItem('queueCureSession', JSON.stringify({ email: normalizedEmail, name: user.name }));
+  const role = user.role || 'receptionist';
+  localStorage.setItem('queueCureSession', JSON.stringify({ email: normalizedEmail, name: user.name, role }));
   return null;
 }
 
@@ -579,10 +590,14 @@ function getSession() {
   }
 }
 
-function requireAuthPage() {
+function requireAuthPage(requiredRole = null) {
   const session = getSession();
   if (!session) {
     window.location.href = 'login.html';
+    return false;
+  }
+  if (requiredRole && session.role !== requiredRole) {
+    window.location.href = 'index.html';
     return false;
   }
   return true;
@@ -591,6 +606,11 @@ function requireAuthPage() {
 function logoutUser() {
   localStorage.removeItem('queueCureSession');
   window.location.href = 'index.html';
+}
+
+function isAdmin() {
+  const session = getSession();
+  return session && session.role === 'admin';
 }
 
 function renderHeaderAuthActions(session) {
@@ -641,6 +661,12 @@ window.addEventListener('DOMContentLoaded', () => {
   if (document.body.id === 'receptionist') {
     if (!requireAuthPage()) return;
     initReceptionist();
+  }
+  if (document.body.id === 'staff-management') {
+    if (!requireAuthPage('admin')) return;
+  }
+  if (document.body.id === 'patient-records' || document.body.id === 'analytics') {
+    if (!requireAuthPage()) return;
   }
   if (document.body.id === 'login' || document.body.id === 'signup') {
     initAuthPages();
