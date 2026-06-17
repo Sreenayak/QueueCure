@@ -1107,3 +1107,331 @@ body#waiting-room {
 .up-next .queue-list .queue-item {
   color: #ecfffe;
 }
+
+/* ============ MANAGEMENT PAGES ============ */
+.management-section,
+.analytics-section {
+  padding: 24px 0;
+}
+
+.section-header {
+  margin-bottom: 32px;
+}
+
+.section-header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.section-header p {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.management-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.add-form-panel,
+.search-panel {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.add-form-panel h3,
+.staff-list-panel h3,
+.patients-list-panel h3,
+.daily-metrics-panel h3 {
+  margin-top: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  background: #f8fcfb;
+  color: #0f172a;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(16, 118, 110, 0.12);
+}
+
+/* Staff List */
+.staff-list,
+.patients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.staff-card,
+.patient-item {
+  background: #f8fcfb;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 118, 110, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.staff-card:hover,
+.patient-item:hover {
+  background: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.1);
+}
+
+.staff-header,
+.patient-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.staff-name,
+.patient-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.staff-visits,
+.patient-visits {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-2);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.remove-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #b91c1c;
+}
+
+.staff-info,
+.patient-info {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.staff-info div,
+.patient-info div {
+  margin-bottom: 6px;
+}
+
+.patient-item-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+/* Patient Details Panel */
+.patient-details-panel {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  margin-top: 24px;
+}
+
+.patient-header h3 {
+  color: var(--accent);
+  margin-top: 0;
+}
+
+.patient-details-content {
+  color: var(--muted);
+}
+
+.medical-notes {
+  background: #f7fffb;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent);
+  margin: 12px 0;
+}
+
+.visits-list {
+  margin-top: 12px;
+}
+
+.visit-record {
+  background: #f8fcfb;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(15, 118, 110, 0.1);
+}
+
+.visit-record div {
+  margin-bottom: 6px;
+}
+
+.visit-record div:last-child {
+  margin-bottom: 0;
+}
+
+/* Analytics */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, var(--accent), #047857);
+  color: white;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(15, 118, 110, 0.15);
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.daily-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.metric-row {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.metric-date {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 120px;
+}
+
+.metric-details {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metric-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.metric-val {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #e2e8f0;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: #cbd5e1;
+}
+
+.search-panel {
+  grid-column: 1 / -1;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .management-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .metric-details {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .metric-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-buttons button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Records - QueueCure</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="patient-records">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="site-brand">
+          <div class="logo"><span class="brand-icon"></span>QueueCure</div>
+          <div class="brand-subtitle">Patient Records</div>
+        </div>
+        <nav class="nav">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="receptionist.html">Reception</a>
+          <a class="nav-link" href="staff-management.html">Staff</a>
+          <a class="nav-link" href="patient-records.html">Patients</a>
+          <a class="nav-link" href="analytics.html">Analytics</a>
+        </nav>
+        <div class="auth-actions">
+          <a class="auth-link" href="login.html">Login</a>
+          <a class="auth-cta" href="signup.html">Sign Up</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="management-section">
+        <div class="section-header">
+          <h1>Patient Records & History</h1>
+          <p>View patient information, visit history, and medical notes.</p>
+        </div>
+
+        <div class="search-panel">
+          <div class="form-row" style="margin-bottom: 0;">
+            <label for="searchPatient">Search Patient</label>
+            <input 
+              type="text" 
+              id="searchPatient" 
+              placeholder="Search by name or phone number" 
+            />
+          </div>
+        </div>
+
+        <section class="patients-list-panel">
+          <h3>Patients</h3>
+          <div id="patientsList" class="patients-list">
+            <p class="muted">No patient records found.</p>
+          </div>
+        </section>
+
+        <aside id="patientDetailsPanel" class="patient-details-panel" style="display: none;">
+          <h3>Patient Details</h3>
+          <div id="patientDetails" class="patient-details-content">
+            <!-- Populated by JavaScript -->
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <strong>QueueCure</strong> © 2026
+        </div>
+        <div class="footer-meta">Track patient history and medical records</div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="receptionist.html">Reception</a>
+        </div>
+      </div>
+    </footer>
+    <script src="app.js"></script>
+    <script src="patient-records.js"></script>
+  </body>
+</html>

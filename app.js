@@ -1,4 +1,7 @@
 const STORAGE_KEY = 'queueCureState';
+const STAFF_KEY = 'queueCureStaff';
+const PATIENTS_KEY = 'queueCurePatients';
+const ANALYTICS_KEY = 'queueCureAnalytics';
 
 const defaultState = {
   queue: [],
@@ -29,6 +32,172 @@ function saveState(state) {
 
 function formatToken(tokenNumber) {
   return `A-${String(tokenNumber).padStart(3, '0')}`;
+}
+
+// ============ STAFF MANAGEMENT ============
+function loadStaff() {
+  try {
+    const raw = localStorage.getItem(STAFF_KEY);
+    if (!raw) return { staff: [] };
+    const parsed = JSON.parse(raw);
+    return { staff: Array.isArray(parsed.staff) ? parsed.staff : [] };
+  } catch (error) {
+    return { staff: [] };
+  }
+}
+
+function saveStaff(staffData) {
+  localStorage.setItem(STAFF_KEY, JSON.stringify(staffData));
+}
+
+function addStaffMember(name, role, department, phone) {
+  const staffData = loadStaff();
+  const newStaff = {
+    id: Date.now(),
+    name: name.trim(),
+    role: role.trim(),
+    department: department.trim(),
+    phone: phone.trim(),
+    joinDate: new Date().toISOString(),
+  };
+  staffData.staff.push(newStaff);
+  saveStaff(staffData);
+  return newStaff;
+}
+
+function removeStaffMember(staffId) {
+  const staffData = loadStaff();
+  staffData.staff = staffData.staff.filter(s => s.id !== staffId);
+  saveStaff(staffData);
+}
+
+// ============ PATIENT HISTORY & RECORDS ============
+function loadPatients() {
+  try {
+    const raw = localStorage.getItem(PATIENTS_KEY);
+    if (!raw) return { patients: {} };
+    const parsed = JSON.parse(raw);
+    return { patients: typeof parsed.patients === 'object' ? parsed.patients : {} };
+  } catch (error) {
+    return { patients: {} };
+  }
+}
+
+function savePatients(patientsData) {
+  localStorage.setItem(PATIENTS_KEY, JSON.stringify(patientsData));
+}
+
+function getOrCreatePatient(name, phone) {
+  const patientsData = loadPatients();
+  const patientKey = `${name.toLowerCase()}_${phone || 'unknown'}`;
+  
+  if (!patientsData.patients[patientKey]) {
+    patientsData.patients[patientKey] = {
+      id: Date.now(),
+      name: name.trim(),
+      phone: phone || 'N/A',
+      visits: [],
+      medicalNotes: '',
+      registeredDate: new Date().toISOString(),
+    };
+    savePatients(patientsData);
+  }
+  return patientsData.patients[patientKey];
+}
+
+function recordPatientVisit(name, phone, doctorName, notes, waitTime) {
+  const patientsData = loadPatients();
+  const patientKey = `${name.toLowerCase()}_${phone || 'unknown'}`;
+  const patient = patientsData.patients[patientKey];
+  
+  if (patient) {
+    patient.visits.push({
+      visitId: Date.now(),
+      date: new Date().toISOString(),
+      doctor: doctorName || 'N/A',
+      notes: notes || '',
+      waitTime: waitTime || 0,
+    });
+    savePatients(patientsData);
+  }
+}
+
+function getPatientHistory(name, phone) {
+  const patientsData = loadPatients();
+  const patientKey = `${name.toLowerCase()}_${phone || 'unknown'}`;
+  return patientsData.patients[patientKey] || null;
+}
+
+// ============ ANALYTICS & REPORTING ============
+function loadAnalytics() {
+  try {
+    const raw = localStorage.getItem(ANALYTICS_KEY);
+    if (!raw) return { 
+      dailyMetrics: {},
+      totalPatients: 0,
+      totalNoShows: 0,
+      averageWaitTime: 0,
+    };
+    return JSON.parse(raw);
+  } catch (error) {
+    return { 
+      dailyMetrics: {},
+      totalPatients: 0,
+      totalNoShows: 0,
+      averageWaitTime: 0,
+    };
+  }
+}
+
+function saveAnalytics(analyticsData) {
+  localStorage.setItem(ANALYTICS_KEY, JSON.stringify(analyticsData));
+}
+
+function recordConsultationComplete(waitTime, noShow = false) {
+  const analytics = loadAnalytics();
+  const today = new Date().toISOString().split('T')[0];
+  
+  if (!analytics.dailyMetrics[today]) {
+    analytics.dailyMetrics[today] = {
+      date: today,
+      consultations: 0,
+      totalWaitTime: 0,
+      averageWaitTime: 0,
+      noShows: 0,
+      peakHour: null,
+    };
+  }
+  
+  const metric = analytics.dailyMetrics[today];
+  metric.consultations += 1;
+  if (noShow) {
+    metric.noShows += 1;
+    analytics.totalNoShows += 1;
+  } else {
+    metric.totalWaitTime += waitTime || 0;
+    metric.averageWaitTime = Math.round(metric.totalWaitTime / (metric.consultations - metric.noShows));
+  }
+  
+  analytics.totalPatients += 1;
+  analytics.averageWaitTime = Math.round(
+    Object.values(analytics.dailyMetrics).reduce((sum, m) => sum + m.averageWaitTime, 0) / 
+    Object.keys(analytics.dailyMetrics).length
+  );
+  
+  saveAnalytics(analytics);
+}
+
+function getAnalyticsReport() {
+  const analytics = loadAnalytics();
+  const metrics = Object.values(analytics.dailyMetrics);
+  
+  return {
+    totalConsultations: analytics.totalPatients,
+    totalNoShows: analytics.totalNoShows,
+    overallAverageWaitTime: analytics.averageWaitTime,
+    dailyMetrics: metrics,
+    peakDay: metrics.length > 0 ? metrics.reduce((max, m) => m.consultations > max.consultations ? m : max) : null,
+  };
 }
 
 function renderReceptionist(state) {
