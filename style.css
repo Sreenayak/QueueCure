@@ -303,6 +303,31 @@ body {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
+.logout-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.22);
+  background: rgba(254, 226, 226, 0.18);
+}
+
+.logout-link:hover {
+  background: rgba(254, 226, 226, 0.28);
+}
+
+.logout-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+  font-size: 0.95rem;
+}
+
 .auth-link:hover {
   background: rgba(15, 118, 110, 0.08);
   color: var(--accent);
@@ -699,7 +724,7 @@ body#waiting-room {
 }
 
 .footer-note {
-  color: rgba(232, 253, 252, 0.8);
+  color: black;
   font-size: 0.92rem;
 }
 
@@ -726,7 +751,46 @@ body#waiting-room {
 
 .footer-meta {
   flex: 1 1 260px;
-  color: rgba(232, 253, 252, 0.9);
+  color: #475569;
+}
+
+.footer-note {
+  color: #334155;
+}
+
+.footer-links a {
+  color: #0f766e;
+}
+
+.footer-inner div,
+.footer-inner a {
+  color: #334155;
+}
+
+.queue-actions .link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #1e3a8a;
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.12);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.queue-actions .link-btn:hover {
+  background: #e0e7ff;
+  border-color: #a5b4fc;
+  transform: translateY(-1px);
+}
+
+.queue-actions .link-btn img {
+  width: 18px;
+  height: 18px;
+  filter: none;
 }
 
 @media (max-width:980px) {
@@ -888,24 +952,26 @@ body#waiting-room {
 }
 
 .site-footer {
-  background: rgba(255, 255, 255, 0.9);
-  border-top: 1px solid rgba(15, 23, 42, 0.08);
-  padding: 18px 0;
-  color: #475569
+  background: #f8fafc;
+  border-top: 3px solid #cbd5e1;
+  padding: 24px 0;
+  color: #334155;
+  box-shadow: inset 0 4px 0 rgba(148, 163, 184, 0.12);
 }
 
 .footer-inner {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  font-size: 0.95rem
+  gap: 18px;
+  align-items: flex-start;
+  font-size: 0.95rem;
 }
 
 @media (max-width:700px) {
   .footer-inner {
     flex-direction: column;
-    align-items: flex-start
+    align-items: stretch;
   }
 }
 

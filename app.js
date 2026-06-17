@@ -435,7 +435,9 @@ function renderHeaderAuthActions(session) {
   } else {
     authActions.innerHTML = `
       <span class="auth-welcome">Hi, ${session.name}</span>
-      <a class="auth-link" href="#" id="logoutBtn">Logout</a>
+      <a class="auth-link logout-link" href="#" id="logoutBtn">
+        <span class="logout-icon">⏻</span>Logout
+      </a>
     `;
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
