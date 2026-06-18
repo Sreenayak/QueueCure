@@ -144,6 +144,7 @@ function loadAnalytics() {
       totalPatients: 0,
       totalNoShows: 0,
       averageWaitTime: 0,
+      totalTimeSpent: 0,
     };
     return JSON.parse(raw);
   } catch (error) {
@@ -152,6 +153,7 @@ function loadAnalytics() {
       totalPatients: 0,
       totalNoShows: 0,
       averageWaitTime: 0,
+      totalTimeSpent: 0,
     };
   }
 }
@@ -169,6 +171,7 @@ function recordConsultationComplete(waitTime, noShow = false) {
       date: today,
       consultations: 0,
       totalWaitTime: 0,
+      totalTime: 0,
       averageWaitTime: 0,
       noShows: 0,
       peakHour: null,
@@ -181,7 +184,10 @@ function recordConsultationComplete(waitTime, noShow = false) {
     metric.noShows += 1;
     analytics.totalNoShows += 1;
   } else {
-    metric.totalWaitTime += waitTime || 0;
+    const effectiveWait = waitTime || 0;
+    metric.totalWaitTime += effectiveWait;
+    metric.totalTime += effectiveWait;
+    analytics.totalTimeSpent += effectiveWait;
     metric.averageWaitTime = Math.round(metric.totalWaitTime / (metric.consultations - metric.noShows));
   }
   
@@ -202,6 +208,7 @@ function getAnalyticsReport() {
     totalConsultations: analytics.totalPatients,
     totalNoShows: analytics.totalNoShows,
     overallAverageWaitTime: analytics.averageWaitTime,
+    totalTimeSpent: analytics.totalTimeSpent,
     dailyMetrics: metrics,
     peakDay: metrics.length > 0 ? metrics.reduce((max, m) => m.consultations > max.consultations ? m : max) : null,
   };
@@ -374,8 +381,10 @@ function callNext() {
     showReceptionistMessage('receptionMessage', 'No patients are waiting to be called.', 'error');
     return;
   }
+
   state.currentToken = state.queue.shift();
   saveState(state);
+  recordConsultationComplete(state.averageConsultationTime);
   syncRender();
   showReceptionistMessage('receptionMessage', `Now calling ${formatToken(state.currentToken.token)}.`, 'success');
 }

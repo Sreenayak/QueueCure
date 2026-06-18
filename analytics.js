@@ -4,6 +4,7 @@ function renderAnalyticsDashboard() {
   document.getElementById('totalConsultations').textContent = analytics.totalConsultations;
   document.getElementById('totalNoShows').textContent = analytics.totalNoShows;
   document.getElementById('avgWaitTime').textContent = analytics.overallAverageWaitTime + ' min';
+  document.getElementById('totalTimeSpent').textContent = analytics.totalTimeSpent + ' min';
   document.getElementById('peakDay').textContent = analytics.peakDay 
     ? new Date(analytics.peakDay.date).toLocaleDateString() 
     : '—';
@@ -57,6 +58,7 @@ Generated: ${new Date().toLocaleString()}
 Total Consultations: ${analytics.totalConsultations}
 Total No-Shows: ${analytics.totalNoShows}
 Overall Average Wait Time: ${analytics.overallAverageWaitTime} minutes
+Total Time Spent: ${analytics.totalTimeSpent} minutes
 Busiest Day: ${analytics.peakDay ? new Date(analytics.peakDay.date).toLocaleDateString() : 'N/A'}
 
 ====== DAILY METRICS ======
@@ -108,6 +110,19 @@ function initAnalytics() {
   }
   
   renderAnalyticsDashboard();
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === ANALYTICS_KEY || event.key === STORAGE_KEY) {
+      renderAnalyticsDashboard();
+    }
+  });
+
+  window.addEventListener('focus', renderAnalyticsDashboard);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      renderAnalyticsDashboard();
+    }
+  });
 }
 
 if (document.body.id === 'analytics') {
